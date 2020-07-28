@@ -33,10 +33,10 @@ class _AbsencePageState extends State<AbsencePage> {
       errors += "\n> Powód 'Inne' wymaga podania dodatkowych informacji";
     }
     if (_startDate == null) {
-      errors += '\n> Sprecyzuj datę rozpoczęcia';
+      errors += '\n> Podaj datę rozpoczęcia';
     }
     if (_endDate == null) {
-      errors += '\n> Sprecyzuj datę zakończenia';
+      errors += '\n> Podaj datę zakończenia';
     }
     // -----
     if (errors == '') {

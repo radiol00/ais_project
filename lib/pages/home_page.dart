@@ -181,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                             SnackBar(content: Text('Podaj email!')));
                         return;
                       }
-                      // Po kliknięciu przycisku pushujemy nowy widget z podanym przez uzytkownika mailem
+                      // Po kliknięciu przycisku pushujemy nowy widget
                       dynamic absence =
                           await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => AbsencePage(),
@@ -209,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                             SnackBar(content: Text('Podaj email!')));
                         return;
                       }
-                      // Po kliknięciu przycisku pushujemy nowy widget z podanym przez uzytkownika mailem
+                      // Po kliknięciu przycisku pushujemy nowy widget
                       dynamic breakObject =
                           await Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => BreakPage(),

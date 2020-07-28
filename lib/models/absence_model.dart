@@ -1,5 +1,6 @@
 import 'package:ais_project/helpers/date_formatter.dart';
 
+// Model zawierający dane nieobecności gotowe do wysłania do bazy
 class Absence {
   Absence({this.startDate, this.endDate, this.reason, this.additionalInfo});
   String toString() {

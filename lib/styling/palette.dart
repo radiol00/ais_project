@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Paleta barw wykorzystywana w aplikacji
 abstract class Palette {
   static final appbar = Color.fromRGBO(99, 91, 85, 1);
   static final buttons = Color.fromRGBO(99, 91, 85, 1);

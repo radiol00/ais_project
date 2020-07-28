@@ -24,7 +24,7 @@ class _BreakPageState extends State<BreakPage> {
   ];
 
   // Podaję context z Buildera w body Scaffoldu, żeby wyświetlić snackbar z funckji onPressed RaisedButtona
-  void submitAbsence(BuildContext context) {
+  void submitBreak(BuildContext context) {
     //Error check
     String errors = '';
     if (reason == null) {
@@ -109,6 +109,10 @@ class _BreakPageState extends State<BreakPage> {
                                 .add(Duration(hours: 2, minutes: 15))),
                             fromText: 'Od',
                             toText: 'Do',
+                            backgroundColor: Palette.secondary,
+                            handlerColor: Palette.appbar,
+                            selectedColor: Palette.appbar,
+                            strokeColor: Palette.appbar,
                           );
 
                           if (time != null) {
@@ -138,7 +142,7 @@ class _BreakPageState extends State<BreakPage> {
                     'Wyślij',
                     style: TextStyle(color: Colors.grey[300]),
                   ),
-                  onPressed: () => submitAbsence(context),
+                  onPressed: () => submitBreak(context),
                 )
               ],
             ),
