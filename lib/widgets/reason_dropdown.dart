@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 
 class ReasonDropdown extends StatelessWidget {
   ReasonDropdown(
-      {@required this.dropdownValue, @required this.setDropdownValue});
+      {@required this.dropdownValue,
+      @required this.setDropdownValue,
+      @required this.reasons});
   final Function setDropdownValue;
   final String dropdownValue;
-  final List<String> reasons = [
-    'Choroba',
-    'Sprawy rodzinne',
-    'Nagły wypadek',
-    'Inne',
-  ];
+  final List<String> reasons;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +26,7 @@ class ReasonDropdown extends StatelessWidget {
           if (value == 'Inne') {
             Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text(
-                    'Po wybraniu tej opcji konieczne są dodatkowe informacje')));
+                    "Po wybraniu opcji 'Inne' konieczne są dodatkowe informacje")));
           }
         });
   }

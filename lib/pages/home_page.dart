@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:ais_project/models/absence_model.dart';
+import 'package:ais_project/models/break_model.dart';
 import 'package:ais_project/pages/break_page.dart';
 import 'package:ais_project/styling/palette.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Stan który będzie wysyłany do child widget'ów
+  // Stan który będzie wykorzystywany do przypisywania zgłoszenia do użytkownika
   String email;
 
   // Strumień kontrolujący asynchroniczną funkcję pobierającą dane z SharedPreferences
@@ -66,6 +68,24 @@ class _HomePageState extends State<HomePage> {
           .showSnackBar(SnackBar(content: Text('Podano niepoprawny email')));
       _inputFocusNode.requestFocus();
     }
+  }
+
+  void addNewAbsence(Absence absence, BuildContext context) {
+    // Tu będzie połaczenie z bazą
+    // Zapewne funkcja będzie musiała być asynchroniczna
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text('Nowe zgłoszenie')));
+    print(email);
+    print(absence.toString());
+  }
+
+  void addNewBreak(Break breakObject, BuildContext context) {
+    // Tu będzie połaczenie z bazą
+    // Zapewne funkcja będzie musiała być asynchroniczna
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text('Nowe zgłoszenie')));
+    print(email);
+    print(breakObject.toString());
   }
 
   @override
@@ -155,11 +175,20 @@ class _HomePageState extends State<HomePage> {
                       'Zgłoś nieobecność',
                       style: TextStyle(color: Colors.grey[300]),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      if (email == null) {
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text('Podaj email!')));
+                        return;
+                      }
                       // Po kliknięciu przycisku pushujemy nowy widget z podanym przez uzytkownika mailem
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AbsencePage(email: email),
+                      dynamic absence =
+                          await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => AbsencePage(),
                       ));
+                      if (absence != null) {
+                        addNewAbsence(absence, context);
+                      }
                     },
                   ),
                 ),
@@ -174,11 +203,21 @@ class _HomePageState extends State<HomePage> {
                       'Zgłoś przerwę w pracy',
                       style: TextStyle(color: Colors.grey[300]),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
+                      if (email == null) {
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text('Podaj email!')));
+                        return;
+                      }
                       // Po kliknięciu przycisku pushujemy nowy widget z podanym przez uzytkownika mailem
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BreakPage(email: email),
+                      dynamic breakObject =
+                          await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => BreakPage(),
                       ));
+
+                      if (breakObject != null) {
+                        addNewBreak(breakObject, context);
+                      }
                     },
                   ),
                 ),
