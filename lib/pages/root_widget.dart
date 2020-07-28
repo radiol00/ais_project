@@ -12,12 +12,12 @@ class RootWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+          scaffoldBackgroundColor: Palette.scaffoldBackground,
+          appBarTheme: AppBarTheme(color: Palette.appbar)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Palette.scaffoldBackground,
-        appBar: AppBar(
-          backgroundColor: Palette.appbar,
-        ),
+        appBar: AppBar(),
         body: HomePage(),
       ),
     );
