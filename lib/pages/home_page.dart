@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ais_project/pages/break_page.dart';
 import 'package:ais_project/styling/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -173,7 +174,12 @@ class _HomePageState extends State<HomePage> {
                       'Zgłoś przerwę w pracy',
                       style: TextStyle(color: Colors.grey[300]),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      // Po kliknięciu przycisku pushujemy nowy widget z podanym przez uzytkownika mailem
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => BreakPage(email: email),
+                      ));
+                    },
                   ),
                 ),
               ],
