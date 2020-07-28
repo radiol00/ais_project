@@ -17,3 +17,9 @@ zaprojektowanie oszczędnego i funkcjonalnego UI.  Po naciśnięciu
 kontrolki 'Wyślij' aplikacja powinna zwrócić na ekran tekst
 powiadomienia z kontrolką 'Nowe zgłoszenie'.  Wybranie tej kontrolki
 powinno przenieść użytkownika na ekran początkowy.
+
+## Zdjęcia poglądowe
+
+![PreviewShot 1](preview/preview-1.png)
+![PreviewShot 2](preview/preview-2.png)
+![PreviewShot 3](preview/preview-3.png)
