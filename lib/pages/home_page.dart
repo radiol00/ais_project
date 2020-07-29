@@ -110,142 +110,144 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(
-              'assets/images/ais_logo.png',
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-              child: StreamBuilder(
-                stream: _streamController.stream,
-                builder: (context, snapshot) {
-                  return Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          focusNode: _inputFocusNode,
-                          onSubmitted: onEmailSubmission,
-                          controller: _textEditingController,
-                          decoration: InputDecoration(
-                              hintText: snapshot.hasData
-                                  ? snapshot.data
-                                  : 'Podaj email',
-                              contentPadding: EdgeInsets.zero,
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Palette.buttons)),
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide.none)),
-                        ),
-                      ),
-                      ...(snapshot.hasData || snapshot.hasError
-                          ? [
-                              // Jeśli snapshot posiada dane lub błąd (sygnalizujący brak rekordu w SharedPreferences)
-                              IconButton(
-                                icon: Icon(Icons.edit),
-                                onPressed: () {
-                                  _inputFocusNode.requestFocus();
-                                },
-                              )
-                            ]
-                          : [
-                              // W przeciwnym razie wyświetl ładowanie
-                              SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    valueColor: AlwaysStoppedAnimation(
-                                        Palette.progressIndicator),
-                                  ))
-                            ]),
-                    ],
-                  );
-                },
+        padding: const EdgeInsets.symmetric(horizontal: 40),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/images/ais_logo.png',
               ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: RaisedButton(
-                    color: Palette.buttons,
-                    child: Text(
-                      'Zgłoś nieobecność',
-                      style: TextStyle(color: Colors.grey[300]),
-                    ),
-                    onPressed: () async {
-                      bool result = true;
-                      if (email == null ||
-                          email != _textEditingController.text) {
-                        if (_textEditingController.text == '') {
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Podaj email!')));
-                          return;
-                        } else {
-                          result = await onEmailSubmission(
-                              _textEditingController.text);
-                        }
-                      }
-                      if (result) {
-                        // Po kliknięciu przycisku pushujemy nowy widget
-                        FocusScope.of(context).unfocus();
-                        dynamic absence =
-                            await Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AbsencePage(),
-                        ));
-                        if (absence != null) {
-                          addNewAbsence(absence, context);
-                        }
-                      }
-                    },
-                  ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                child: StreamBuilder(
+                  stream: _streamController.stream,
+                  builder: (context, snapshot) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            focusNode: _inputFocusNode,
+                            onSubmitted: onEmailSubmission,
+                            controller: _textEditingController,
+                            decoration: InputDecoration(
+                                hintText: snapshot.hasData
+                                    ? snapshot.data
+                                    : 'Podaj email',
+                                contentPadding: EdgeInsets.zero,
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Palette.buttons)),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none)),
+                          ),
+                        ),
+                        ...(snapshot.hasData || snapshot.hasError
+                            ? [
+                                // Jeśli snapshot posiada dane lub błąd (sygnalizujący brak rekordu w SharedPreferences)
+                                IconButton(
+                                  icon: Icon(Icons.edit),
+                                  onPressed: () {
+                                    _inputFocusNode.requestFocus();
+                                  },
+                                )
+                              ]
+                            : [
+                                // W przeciwnym razie wyświetl ładowanie
+                                SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation(
+                                          Palette.progressIndicator),
+                                    ))
+                              ]),
+                      ],
+                    );
+                  },
                 ),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: RaisedButton(
-                    color: Palette.buttons,
-                    child: Text(
-                      'Zgłoś przerwę w pracy',
-                      style: TextStyle(color: Colors.grey[300]),
-                    ),
-                    onPressed: () async {
-                      bool result = true;
-                      if (email == null ||
-                          email != _textEditingController.text) {
-                        if (_textEditingController.text == '') {
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Podaj email!')));
-                          return;
-                        } else {
-                          result = await onEmailSubmission(
-                              _textEditingController.text);
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: RaisedButton(
+                      color: Palette.buttons,
+                      child: Text(
+                        'Zgłoś nieobecność',
+                        style: TextStyle(color: Colors.grey[300]),
+                      ),
+                      onPressed: () async {
+                        bool result = true;
+                        if (email == null ||
+                            email != _textEditingController.text) {
+                          if (_textEditingController.text == '') {
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text('Podaj email!')));
+                            return;
+                          } else {
+                            result = await onEmailSubmission(
+                                _textEditingController.text);
+                          }
                         }
-                      }
-                      if (result) {
-                        // Po kliknięciu przycisku pushujemy nowy widget
-                        FocusScope.of(context).unfocus();
-                        dynamic breakObject =
-                            await Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => BreakPage(),
-                        ));
+                        if (result) {
+                          // Po kliknięciu przycisku pushujemy nowy widget
+                          FocusScope.of(context).unfocus();
+                          dynamic absence = await Navigator.of(context)
+                              .push(MaterialPageRoute(
+                            builder: (context) => AbsencePage(),
+                          ));
+                          if (absence != null) {
+                            addNewAbsence(absence, context);
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: RaisedButton(
+                      color: Palette.buttons,
+                      child: Text(
+                        'Zgłoś przerwę w pracy',
+                        style: TextStyle(color: Colors.grey[300]),
+                      ),
+                      onPressed: () async {
+                        bool result = true;
+                        if (email == null ||
+                            email != _textEditingController.text) {
+                          if (_textEditingController.text == '') {
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text('Podaj email!')));
+                            return;
+                          } else {
+                            result = await onEmailSubmission(
+                                _textEditingController.text);
+                          }
+                        }
+                        if (result) {
+                          // Po kliknięciu przycisku pushujemy nowy widget
+                          FocusScope.of(context).unfocus();
+                          dynamic breakObject = await Navigator.of(context)
+                              .push(MaterialPageRoute(
+                            builder: (context) => BreakPage(),
+                          ));
 
-                        if (breakObject != null) {
-                          addNewBreak(breakObject, context);
+                          if (breakObject != null) {
+                            addNewBreak(breakObject, context);
+                          }
                         }
-                      }
-                    },
+                      },
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

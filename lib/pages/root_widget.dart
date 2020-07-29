@@ -22,6 +22,7 @@ class RootWidget extends StatelessWidget {
         scaffoldBackgroundColor: Palette.scaffoldBackground,
         appBarTheme: AppBarTheme(color: Palette.appbar),
         canvasColor: Palette.secondary, // Kolor na dropdownbutton
+        // platform: TargetPlatform.iOS,
       ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(

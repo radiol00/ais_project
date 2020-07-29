@@ -58,93 +58,103 @@ class _BreakPageState extends State<BreakPage> {
 
   @override
   Widget build(BuildContext context) {
+    AppBar appBar = AppBar(
+      title: Text('Zgłoś przerwę w pracy'),
+      centerTitle: true,
+    );
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Zgłoś przerwę w pracy'),
-        centerTitle: true,
-      ),
+      appBar: appBar,
       body: Builder(
         builder: (context) => Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ReasonDropdown(
-                  reasons: breakReasons,
-                  dropdownValue: reason,
-                  setDropdownValue: (value) {
-                    setState(() {
-                      reason = value;
-                    });
-                  },
-                ),
-                Row(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+            child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height -
+                    appBar.preferredSize.height -
+                    50,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Expanded(
-                      child: RaisedButton(
-                        child: Text(
-                          _startTime == null || _endTime == null
-                              ? 'Wybierz przedział czasowy'
-                              : formatTime(_startTime) +
-                                  ' - ' +
-                                  formatTime(_endTime),
-                          style:
-                              TextStyle(color: Colors.grey[300], fontSize: 25),
-                        ),
-                        color: Palette.buttons,
-                        onPressed: () async {
-                          dynamic time = await showTimeRangePicker(
-                            // Dodawanie 2 godzin ze względu na strefę czasową, w przyszłości zaimplementować strefy czasowe
-                            context: context,
-                            disabledTime: TimeRange(
-                                startTime: TimeOfDay(hour: 23, minute: 55),
-                                endTime: TimeOfDay.fromDateTime(
-                                    DateTime.now().add(Duration(hours: 2)))),
-                            snap: true,
-                            interval: Duration(minutes: 5),
-                            start: TimeOfDay.fromDateTime(
-                                DateTime.now().add(Duration(hours: 2))),
-                            end: TimeOfDay.fromDateTime(DateTime.now()
-                                .add(Duration(hours: 2, minutes: 15))),
-                            fromText: 'Od',
-                            toText: 'Do',
-                            backgroundColor: Palette.secondary,
-                            handlerColor: Palette.appbar,
-                            selectedColor: Palette.appbar,
-                            strokeColor: Palette.appbar,
-                          );
-
-                          if (time != null) {
-                            setState(() {
-                              _startTime = time.startTime;
-                              _endTime = time.endTime;
-                            });
-                          }
-                        },
-                      ),
+                    ReasonDropdown(
+                      reasons: breakReasons,
+                      dropdownValue: reason,
+                      setDropdownValue: (value) {
+                        setState(() {
+                          reason = value;
+                        });
+                      },
                     ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RaisedButton(
+                            child: Text(
+                              _startTime == null || _endTime == null
+                                  ? 'Wybierz przedział czasowy'
+                                  : formatTime(_startTime) +
+                                      ' - ' +
+                                      formatTime(_endTime),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.grey[300], fontSize: 25),
+                            ),
+                            color: Palette.buttons,
+                            onPressed: () async {
+                              dynamic time = await showTimeRangePicker(
+                                // Dodawanie 2 godzin ze względu na strefę czasową, w przyszłości zaimplementować strefy czasowe
+                                context: context,
+                                disabledTime: TimeRange(
+                                    startTime: TimeOfDay(hour: 23, minute: 55),
+                                    endTime: TimeOfDay.fromDateTime(
+                                        DateTime.now()
+                                            .add(Duration(hours: 2)))),
+                                snap: true,
+                                interval: Duration(minutes: 5),
+                                start: TimeOfDay.fromDateTime(
+                                    DateTime.now().add(Duration(hours: 2))),
+                                end: TimeOfDay.fromDateTime(DateTime.now()
+                                    .add(Duration(hours: 2, minutes: 15))),
+                                fromText: 'Od',
+                                toText: 'Do',
+                                backgroundColor: Palette.secondary,
+                                handlerColor: Palette.appbar,
+                                selectedColor: Palette.appbar,
+                                strokeColor: Palette.appbar,
+                              );
+
+                              if (time != null) {
+                                setState(() {
+                                  _startTime = time.startTime;
+                                  _endTime = time.endTime;
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    TextField(
+                      controller: _additionalInfoController,
+                      maxLines: 4,
+                      keyboardType: TextInputType.multiline,
+                      decoration: InputDecoration(
+                          hintText: 'Informacje dodatkowe',
+                          border: InputBorder.none,
+                          fillColor: Palette.secondary,
+                          filled: true),
+                    ),
+                    RaisedButton(
+                      color: Palette.buttons,
+                      child: Text(
+                        'Wyślij',
+                        style: TextStyle(color: Colors.grey[300]),
+                      ),
+                      onPressed: () => submitBreak(context),
+                    )
                   ],
                 ),
-                TextField(
-                  controller: _additionalInfoController,
-                  maxLines: 4,
-                  keyboardType: TextInputType.multiline,
-                  decoration: InputDecoration(
-                      hintText: 'Informacje dodatkowe',
-                      border: InputBorder.none,
-                      fillColor: Palette.secondary,
-                      filled: true),
-                ),
-                RaisedButton(
-                  color: Palette.buttons,
-                  child: Text(
-                    'Wyślij',
-                    style: TextStyle(color: Colors.grey[300]),
-                  ),
-                  onPressed: () => submitBreak(context),
-                )
-              ],
+              ),
             ),
           ),
         ),
