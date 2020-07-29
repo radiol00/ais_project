@@ -144,7 +144,6 @@ class _HomePageState extends State<HomePage> {
                           ? [
                               // Jeśli snapshot posiada dane lub błąd (sygnalizujący brak rekordu w SharedPreferences)
                               IconButton(
-                                splashRadius: 20.0,
                                 icon: Icon(Icons.edit),
                                 onPressed: () {
                                   _inputFocusNode.requestFocus();

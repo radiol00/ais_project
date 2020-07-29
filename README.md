@@ -20,6 +20,8 @@ powinno przenieść użytkownika na ekran początkowy.
 
 ## Zdjęcia poglądowe
 
-![PreviewShot 1](preview/preview-1.png)
-![PreviewShot 2](preview/preview-2.png)
-![PreviewShot 3](preview/preview-3.png)
+<p float="left">
+  <img alt="PreviewShot 1" src="preview/preview-1.png" width="300" />
+  <img alt="PreviewShot 2" src="preview/preview-2.png" width="300" /> 
+  <img alt="PreviewShot 3" src="preview/preview-3.png" width="300" />
+</p>
