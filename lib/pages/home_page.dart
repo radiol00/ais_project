@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void onEmailSubmission(value) async {
+  Future<bool> onEmailSubmission(value) async {
     if (email != null && value == "") {
       // Jeśli użytkownik usunie value z input'a to usuwam rekord z SharedPreferences
       final preferences = await SharedPreferences.getInstance();
@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         email = null;
       });
+      return false;
     } else if (EmailValidator.validate(value)) {
       // Walidacja maila
       final preferences = await SharedPreferences.getInstance();
@@ -62,11 +63,13 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         email = value;
       });
+      return true;
     } else {
       // Wyświetl błąd w snackbarze i zresetuj focus z powrotem na textinput
       Scaffold.of(context)
           .showSnackBar(SnackBar(content: Text('Podano niepoprawny email')));
       _inputFocusNode.requestFocus();
+      return false;
     }
   }
 
@@ -175,18 +178,28 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(color: Colors.grey[300]),
                     ),
                     onPressed: () async {
-                      if (email == null) {
-                        Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text('Podaj email!')));
-                        return;
+                      bool result = true;
+                      if (email == null ||
+                          email != _textEditingController.text) {
+                        if (_textEditingController.text == '') {
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text('Podaj email!')));
+                          return;
+                        } else {
+                          result = await onEmailSubmission(
+                              _textEditingController.text);
+                        }
                       }
-                      // Po kliknięciu przycisku pushujemy nowy widget
-                      dynamic absence =
-                          await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => AbsencePage(),
-                      ));
-                      if (absence != null) {
-                        addNewAbsence(absence, context);
+                      if (result) {
+                        // Po kliknięciu przycisku pushujemy nowy widget
+                        FocusScope.of(context).unfocus();
+                        dynamic absence =
+                            await Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AbsencePage(),
+                        ));
+                        if (absence != null) {
+                          addNewAbsence(absence, context);
+                        }
                       }
                     },
                   ),
@@ -203,19 +216,29 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(color: Colors.grey[300]),
                     ),
                     onPressed: () async {
-                      if (email == null) {
-                        Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text('Podaj email!')));
-                        return;
+                      bool result = true;
+                      if (email == null ||
+                          email != _textEditingController.text) {
+                        if (_textEditingController.text == '') {
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text('Podaj email!')));
+                          return;
+                        } else {
+                          result = await onEmailSubmission(
+                              _textEditingController.text);
+                        }
                       }
-                      // Po kliknięciu przycisku pushujemy nowy widget
-                      dynamic breakObject =
-                          await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => BreakPage(),
-                      ));
+                      if (result) {
+                        // Po kliknięciu przycisku pushujemy nowy widget
+                        FocusScope.of(context).unfocus();
+                        dynamic breakObject =
+                            await Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => BreakPage(),
+                        ));
 
-                      if (breakObject != null) {
-                        addNewBreak(breakObject, context);
+                        if (breakObject != null) {
+                          addNewBreak(breakObject, context);
+                        }
                       }
                     },
                   ),
