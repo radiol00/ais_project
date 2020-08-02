@@ -145,7 +145,6 @@ class _AbsencePageState extends State<AbsencePage> {
       appBar: appBar,
       body: Builder(
         builder: (context) {
-          print(MediaQuery.of(context).size.width);
           return Center(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
