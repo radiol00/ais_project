@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:ais_project/pages/absence_page.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   @override
@@ -73,16 +74,25 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void addNewAbsence(Absence absence, BuildContext context) {
+  void addNewAbsence(Absence absence, BuildContext context) async {
     // Tu będzie połaczenie z bazą
     // Zapewne funkcja będzie musiała być asynchroniczna
-    Scaffold.of(context)
-        .showSnackBar(SnackBar(content: Text('Nowe zgłoszenie')));
-    print(email);
-    print(absence.toString());
+    try {
+      final response =
+          await http.post('http://192.168.0.104:8000/breakapp/absence/');
+      if (response.statusCode == 200) {
+        Scaffold.of(context)
+            .showSnackBar(SnackBar(content: Text('Nowe zgłoszenie')));
+      } else {
+        Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text('Wystąpił błąd podczas dodawania')));
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
-  void addNewBreak(Break breakObject, BuildContext context) {
+  void addNewBreak(Break breakObject, BuildContext context) async {
     // Tu będzie połaczenie z bazą
     // Zapewne funkcja będzie musiała być asynchroniczna
     Scaffold.of(context)
