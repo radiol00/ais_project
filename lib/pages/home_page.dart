@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'dart:convert';
 import 'package:ais_project/models/absence_model.dart';
 import 'package:ais_project/models/break_model.dart';
 import 'package:ais_project/pages/break_page.dart';
@@ -78,8 +78,15 @@ class _HomePageState extends State<HomePage> {
     // Tu będzie połaczenie z bazą
     // Zapewne funkcja będzie musiała być asynchroniczna
     try {
-      final response =
-          await http.post('http://192.168.0.104:8000/breakapp/absence/');
+      final data = {
+        'email': email,
+        ...absence.toMap(),
+      };
+      print(json.encode(data));
+      final response = await http.put(
+          'http://192.168.0.104:8000/breakapp/absence/add',
+          headers: {'Content-Type': "application/json"},
+          body: json.encode(data));
       if (response.statusCode == 200) {
         Scaffold.of(context)
             .showSnackBar(SnackBar(content: Text('Nowe zgłoszenie')));

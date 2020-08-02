@@ -16,6 +16,16 @@ class Break {
         ' [$reason] [$additionalInfo]';
   }
 
+  Map toMap() {
+    return {
+      'day': day,
+      'startTime': startTime,
+      'endTime': endTime,
+      'reason': reason,
+      'additionalInfo': additionalInfo,
+    };
+  }
+
   DateTime day;
   TimeOfDay startTime;
   TimeOfDay endTime;

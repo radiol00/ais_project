@@ -10,6 +10,15 @@ class Absence {
         ' [$reason] [$additionalInfo]';
   }
 
+  Map toMap() {
+    return {
+      'startDate': startDate.toString().substring(0, 10),
+      'endDate': endDate.toString().substring(0, 10),
+      'reason': reason,
+      'additionalInfo': additionalInfo,
+    };
+  }
+
   DateTime startDate;
   DateTime endDate;
   String reason;
