@@ -13,9 +13,16 @@ class AuthgateLoading extends AuthgateState {
   List<Object> get props => [];
 }
 
-class AuthgateAuthorized extends AuthgateState {
+class AuthgateAppLoading extends AuthgateState {
   @override
   List<Object> get props => [];
+}
+
+class AuthgateAuthorized extends AuthgateState {
+  AuthgateAuthorized({this.user});
+  final User user;
+  @override
+  List<Object> get props => [user];
 }
 
 class AuthgateError extends AuthgateState {

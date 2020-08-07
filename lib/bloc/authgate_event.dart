@@ -15,3 +15,8 @@ class AuthgateTryToVerifyJWT extends AuthgateEvent {
   @override
   List<Object> get props => [];
 }
+
+class AuthgateLogout extends AuthgateEvent {
+  @override
+  List<Object> get props => [];
+}

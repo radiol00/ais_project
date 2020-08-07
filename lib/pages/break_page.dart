@@ -3,7 +3,6 @@ import 'package:ais_project/models/break_model.dart';
 import 'package:ais_project/styling/palette.dart';
 import 'package:ais_project/widgets/reason_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:time_range_picker/time_range_picker.dart';
 
 class BreakPage extends StatefulWidget {
   @override
@@ -100,36 +99,7 @@ class _BreakPageState extends State<BreakPage> {
                                   color: Colors.grey[300], fontSize: 25),
                             ),
                             color: Palette.buttons,
-                            onPressed: () async {
-                              dynamic time = await showTimeRangePicker(
-                                // Dodawanie 2 godzin ze względu na strefę czasową, w przyszłości zaimplementować strefy czasowe
-                                context: context,
-                                disabledTime: TimeRange(
-                                    startTime: TimeOfDay(hour: 23, minute: 55),
-                                    endTime: TimeOfDay.fromDateTime(
-                                        DateTime.now()
-                                            .add(Duration(hours: 2)))),
-                                snap: true,
-                                interval: Duration(minutes: 5),
-                                start: TimeOfDay.fromDateTime(
-                                    DateTime.now().add(Duration(hours: 2))),
-                                end: TimeOfDay.fromDateTime(DateTime.now()
-                                    .add(Duration(hours: 2, minutes: 15))),
-                                fromText: 'Od',
-                                toText: 'Do',
-                                backgroundColor: Palette.secondary,
-                                handlerColor: Palette.appbar,
-                                selectedColor: Palette.appbar,
-                                strokeColor: Palette.appbar,
-                              );
-
-                              if (time != null) {
-                                setState(() {
-                                  _startTime = time.startTime;
-                                  _endTime = time.endTime;
-                                });
-                              }
-                            },
+                            onPressed: () async {},
                           ),
                         ),
                       ],

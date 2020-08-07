@@ -2,7 +2,6 @@ import 'package:ais_project/bloc/authgate_bloc.dart';
 import 'package:ais_project/styling/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:email_validator/email_validator.dart';
 
 class HelloPage extends StatefulWidget {
   @override
@@ -30,10 +29,7 @@ class _HelloPageState extends State<HelloPage>
     });
     _animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
-    _animation = Tween<double>(begin: 1, end: 0).animate(_animationController)
-      ..addListener(() {
-        setState(() {});
-      });
+    _animation = Tween<double>(begin: 1, end: 0).animate(_animationController);
     _animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _animationController.reverse();
@@ -43,7 +39,6 @@ class _HelloPageState extends State<HelloPage>
   }
 
   void validateLoginForm(BuildContext context) {
-    print('${_emailInput.text} ${_passwordInput.text}');
     BlocProvider.of<AuthgateBloc>(context).add(
         AuthgateLogin(email: _emailInput.text, password: _passwordInput.text));
   }
@@ -345,13 +340,18 @@ class _HelloPageState extends State<HelloPage>
               ),
               SizedBox(
                 height: 45.0,
-                child: Opacity(
-                  opacity: _animation.value,
-                  child: Text(
-                    _currentTab,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 21),
-                  ),
+                child: AnimatedBuilder(
+                  animation: _animation,
+                  builder: (context, child) {
+                    return Opacity(
+                      opacity: _animation.value,
+                      child: Text(
+                        _currentTab,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 21),
+                      ),
+                    );
+                  },
                 ),
               ),
               Expanded(child: pageView)
@@ -364,7 +364,14 @@ class _HelloPageState extends State<HelloPage>
 
   @override
   Widget build(BuildContext context) {
-    return buildInitialView();
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+      ),
+      body: buildInitialView(),
+    );
   }
 
   @override
