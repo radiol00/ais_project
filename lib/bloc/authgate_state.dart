@@ -24,16 +24,15 @@ class AuthgateAppLoading extends AuthgateState {
 }
 
 class AuthgateAuthorized extends AuthgateState {
-  AuthgateAuthorized({this.user});
-  final User user;
+  AuthgateAuthorized({this.repo});
+  final AISRepository repo;
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [repo];
 }
 
 class AuthgateError extends AuthgateState {
-  AuthgateError({this.message, this.errorPlaceTag});
+  AuthgateError({this.message});
   final String message;
-  final String errorPlaceTag;
   @override
-  List<Object> get props => [message, errorPlaceTag];
+  List<Object> get props => [message];
 }

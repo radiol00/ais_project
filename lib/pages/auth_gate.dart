@@ -45,7 +45,7 @@ class _AuthGateState extends State<AuthGate> {
             }
             if (state is AuthgateAuthorized) {
               return HomePage(
-                user: state.user,
+                repo: state.repo,
               );
             }
             return HelloPage();

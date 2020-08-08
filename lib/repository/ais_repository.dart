@@ -1,3 +1,4 @@
+import 'package:ais_project/models/absence_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -10,6 +11,11 @@ class AISRepository {
 
   User decodeTokenToUser(String token) {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    return User(email: decodedToken['email'], id: decodedToken['user_id']);
+  }
+
+  User getUser() {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtTokens['access']);
     return User(email: decodedToken['email'], id: decodedToken['user_id']);
   }
 
@@ -59,6 +65,47 @@ class AISRepository {
         return decodeTokenToUser(jwtTokens['access']);
       }
       return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<dynamic> getUserAbsences() async {
+    try {
+      final response = await http.get('$url/user/absence/', headers: {
+        'Content-Type': "application/json",
+        'Authorization': 'Bearer ${jwtTokens['access']}'
+      });
+      if (response.statusCode == 200) {
+        List<Absence> absencesList = [];
+        List<dynamic> absences = json.decode(response.body);
+        absences.forEach((element) {
+          absencesList.add(Absence.fromMap(element));
+        });
+        return absencesList;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  Future<bool> addAbsence(Absence absence) async {
+    try {
+      final response = await http.post('$url/absence/',
+          headers: {
+            'Content-Type': "application/json",
+            'Authorization': 'Bearer ${jwtTokens['access']}'
+          },
+          body: json.encode(absence.toMap()));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       print(e);
       return false;

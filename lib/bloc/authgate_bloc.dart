@@ -21,7 +21,7 @@ class AuthgateBloc extends Bloc<AuthgateEvent, AuthgateState> {
       yield AuthgateAppLoading();
       dynamic user = await _repo.init();
       if (user is User) {
-        yield AuthgateAuthorized(user: user);
+        yield AuthgateAuthorized(repo: _repo);
       } else {
         yield AuthgateInitial();
       }
@@ -29,7 +29,7 @@ class AuthgateBloc extends Bloc<AuthgateEvent, AuthgateState> {
       yield AuthgateLoading();
       dynamic user = await _repo.login(event.email, event.password);
       if (user is User) {
-        yield AuthgateAuthorized(user: user);
+        yield AuthgateAuthorized(repo: _repo);
       } else {
         yield AuthgateError(message: 'Wystąpił błąd podczas logowania');
       }
