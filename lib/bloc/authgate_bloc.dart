@@ -10,7 +10,7 @@ part 'authgate_event.dart';
 part 'authgate_state.dart';
 
 class AuthgateBloc extends Bloc<AuthgateEvent, AuthgateState> {
-  AuthgateBloc() : super(AuthgateInitial());
+  AuthgateBloc() : super(AuthgateAppLoading());
 
   AISRepository _repo = AISRepository();
   @override

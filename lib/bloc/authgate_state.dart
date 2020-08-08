@@ -8,6 +8,11 @@ class AuthgateInitial extends AuthgateState {
   List<Object> get props => [];
 }
 
+class AuthgateUnauthorized extends AuthgateState {
+  @override
+  List<Object> get props => [];
+}
+
 class AuthgateLoading extends AuthgateState {
   @override
   List<Object> get props => [];
