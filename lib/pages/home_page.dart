@@ -8,8 +8,9 @@ import 'package:ais_project/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({this.repo});
+  HomePage({@required this.repo, @required this.authgateBloc});
   final AISRepository repo;
+  final AuthgateBloc authgateBloc;
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   User user;
   @override
   void initState() {
-    _bloc = AbsencesBloc(repo: widget.repo);
+    _bloc = AbsencesBloc(repo: widget.repo, authgateBloc: widget.authgateBloc);
     _bloc.add(AbsencesGet());
     user = widget.repo.getUser();
     super.initState();
