@@ -10,9 +10,16 @@ part 'authgate_event.dart';
 part 'authgate_state.dart';
 
 class AuthgateBloc extends Bloc<AuthgateEvent, AuthgateState> {
-  AuthgateBloc() : super(AuthgateAppLoading());
+  AISRepository _repo;
 
-  AISRepository _repo = AISRepository();
+  // Use this function to logout user in repo in case of error (eg. both tokens expired)
+  void logoutUser() {
+    this.add(AuthgateLogout());
+  }
+
+  AuthgateBloc() : super(AuthgateAppLoading()) {
+    _repo = AISRepository(logoutUser: logoutUser);
+  }
 
   @override
   Stream<AuthgateState> mapEventToState(

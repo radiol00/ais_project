@@ -1,6 +1,5 @@
-import 'package:ais_project/bloc/absences_bloc.dart';
 import 'package:ais_project/bloc/authgate_bloc.dart';
-import 'package:ais_project/models/absence_model.dart';
+import 'package:ais_project/pages/absence_page.dart';
 import 'package:ais_project/repository/ais_repository.dart';
 import 'package:ais_project/styling/palette.dart';
 import 'package:flutter/material.dart';
@@ -8,23 +7,46 @@ import 'package:ais_project/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({@required this.repo, @required this.authgateBloc});
+  HomePage({@required this.repo});
   final AISRepository repo;
-  final AuthgateBloc authgateBloc;
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  AbsencesBloc _bloc;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   User user;
+
+  String currentRoute = '/';
+  String appBarRouteName = 'Strona główna';
+
   @override
   void initState() {
-    _bloc = AbsencesBloc(repo: widget.repo, authgateBloc: widget.authgateBloc);
-    _bloc.add(AbsencesGet());
     user = widget.repo.getUser();
     super.initState();
+  }
+
+  Widget _buildListTile({
+    String routeName,
+    String title,
+    Icon icon,
+  }) {
+    return ListTile(
+      selected: currentRoute == routeName,
+      leading: icon,
+      title: Text(title),
+      onTap: () {
+        if (currentRoute != routeName) {
+          setState(() {
+            appBarRouteName = title;
+            currentRoute = routeName;
+          });
+          Navigator.pop(context);
+          _navigatorKey.currentState.pushReplacementNamed(routeName);
+        }
+      },
+    );
   }
 
   Widget _buildDrawer(context) {
@@ -58,6 +80,21 @@ class _HomePageState extends State<HomePage> {
                 user.email,
                 style: TextStyle(fontSize: 18),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Divider(
+                  thickness: 3,
+                  height: 20,
+                ),
+              ),
+              _buildListTile(
+                  routeName: '/',
+                  icon: Icon(Icons.home),
+                  title: 'Strona główna'),
+              _buildListTile(
+                  routeName: '/my_absences',
+                  icon: Icon(Icons.event_busy),
+                  title: 'Moje nieobecności'),
             ],
           ),
           Row(
@@ -83,58 +120,52 @@ class _HomePageState extends State<HomePage> {
     return Material(
       elevation: 20.0,
       child: Scaffold(
-        key: _scaffoldKey,
-        drawer: _buildDrawer(context),
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              _scaffoldKey.currentState.openDrawer();
-            },
-            splashRadius: 20,
-          ),
-        ),
-        body: Column(
-          children: [
-            BlocBuilder(
-              bloc: _bloc,
-              builder: (context, state) {
-                if (state is AbsencesLoading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state is AbsencesLoaded) {
-                  return Center(
-                    child: Text('${state.absences}'),
-                  );
-                } else if (state is AbsencesError) {
-                  return Center(
-                    child: Text('error'),
-                  );
-                }
-                return Center();
-              },
-            ),
-            RaisedButton(
+          key: _scaffoldKey,
+          drawer: _buildDrawer(context),
+          appBar: AppBar(
+            title: Text(appBarRouteName),
+            leading: IconButton(
+              icon: Icon(Icons.menu),
               onPressed: () {
-                _bloc.add(AbsencesAdd(
-                    absence: Absence(
-                        startDate: DateTime(2020),
-                        endDate: DateTime(2020),
-                        additionalInfo: 'raz',
-                        reason: 'dwa')));
+                _scaffoldKey.currentState.openDrawer();
               },
-              child: Text('dodaj'),
-            )
-          ],
-        ),
-      ),
+              splashRadius: 20,
+            ),
+          ),
+          body: Navigator(
+            initialRoute: '/',
+            key: _navigatorKey,
+            onGenerateRoute: (settings) {
+              switch (settings.name) {
+                case '/':
+                  return MaterialPageRoute(
+                    builder: (context) => Material(
+                      child: Center(
+                        child: Text('Strona główna, ogłoszenia?'),
+                      ),
+                    ),
+                  );
+                case '/my_absences':
+                  return MaterialPageRoute(
+                      builder: (context) => AbsencePage(
+                            repo: widget.repo,
+                          ));
+                default:
+                  return MaterialPageRoute(
+                    builder: (context) {
+                      return Center(
+                        child: Text('No such route ${settings.name}'),
+                      );
+                    },
+                  );
+              }
+            },
+          )),
     );
   }
 
   @override
   void dispose() {
-    _bloc.close();
     super.dispose();
   }
 }

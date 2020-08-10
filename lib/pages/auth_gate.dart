@@ -46,7 +46,6 @@ class _AuthGateState extends State<AuthGate> {
             if (state is AuthgateAuthorized) {
               return HomePage(
                 repo: state.repo,
-                authgateBloc: _bloc,
               );
             }
             return HelloPage();

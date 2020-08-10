@@ -7,13 +7,12 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:ais_project/models/user_model.dart';
 
 class AISRepository {
+  AISRepository({this.logoutUser});
+
+  // Use this function to logout user in case of error (eg. both tokens expired)
+  final Function logoutUser;
   final String url = 'http://192.168.0.104:8000';
   Map jwtTokens = {'access': '', 'refresh': ''};
-
-  User decodeTokenToUser(String token) {
-    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
-    return User(email: decodedToken['email'], id: decodedToken['user_id']);
-  }
 
   User getUser() {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtTokens['access']);
@@ -30,12 +29,15 @@ class AISRepository {
 
     // Check for access token viability
     // if access token is expired, use refresh token to refresh access token
-    // if both tokens are expired return RepoDispatchingNotPossible, which should be used to logout user
+    // if both tokens are expired use logoutUser function
     String accessToken = jwtTokens['access'];
     String refreshToken = jwtTokens['refresh'];
     if (JwtDecoder.isExpired(accessToken)) {
-      if (JwtDecoder.isExpired(refreshToken))
-        return RepoDispatchingNotPossible();
+      if (JwtDecoder.isExpired(refreshToken)) {
+        logoutUser();
+        return false;
+      }
+
       final data = {'refresh': refreshToken};
       final response = await http.post('$url/auth/refresh/',
           headers: {'Content-Type': "application/json"},
@@ -47,7 +49,8 @@ class AISRepository {
         await storage.write(key: 'aisjwtaccess', value: jwtTokens['access']);
         return true;
       } else {
-        return RepoDispatchingNotPossible();
+        logoutUser();
+        return false;
       }
     }
 

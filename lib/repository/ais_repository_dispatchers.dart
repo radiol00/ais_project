@@ -16,5 +16,3 @@ class RepoAddAbsence extends RepoAction {
   RepoAddAbsence({this.absence});
   final Absence absence;
 }
-
-class RepoDispatchingNotPossible {}
