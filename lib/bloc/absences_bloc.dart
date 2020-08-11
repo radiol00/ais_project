@@ -20,6 +20,7 @@ class AbsencesBloc extends Bloc<AbsencesEvent, AbsencesState> {
   ) async* {
     if (event is AbsencesGet) {
       dynamic result = await repo.dispatch(RepoGetUserAbsences());
+      print('bloc: $result');
       if (result is List<Absence>) {
         yield AbsencesLoaded(absences: result);
       } else {

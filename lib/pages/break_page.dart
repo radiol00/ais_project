@@ -1,4 +1,4 @@
-import 'package:ais_project/helpers/time_formatter.dart';
+import 'package:ais_project/formatters/time_formatter.dart';
 import 'package:ais_project/models/break_model.dart';
 import 'package:ais_project/styling/palette.dart';
 import 'package:ais_project/widgets/reason_dropdown.dart';

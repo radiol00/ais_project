@@ -32,6 +32,8 @@ class AISRepository {
     // if both tokens are expired use logoutUser function
     String accessToken = jwtTokens['access'];
     String refreshToken = jwtTokens['refresh'];
+    print(
+        '$action ${JwtDecoder.isExpired(accessToken)}, ${JwtDecoder.isExpired(refreshToken)}');
     if (JwtDecoder.isExpired(accessToken)) {
       if (JwtDecoder.isExpired(refreshToken)) {
         logoutUser();
@@ -47,7 +49,6 @@ class AISRepository {
         jwtTokens['refresh'] = refreshToken;
         final storage = FlutterSecureStorage();
         await storage.write(key: 'aisjwtaccess', value: jwtTokens['access']);
-        return true;
       } else {
         logoutUser();
         return false;
@@ -144,6 +145,7 @@ class AISRepository {
         absences.forEach((element) {
           absencesList.add(Absence.fromMap(element));
         });
+        print('repo: $absencesList');
         return absencesList;
       } else {
         return false;

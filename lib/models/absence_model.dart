@@ -1,4 +1,4 @@
-import 'package:ais_project/helpers/date_formatter.dart';
+import 'package:ais_project/formatters/date_formatter.dart';
 
 // Model zawierający dane nieobecności gotowe do wysłania do bazy
 class Absence {
@@ -15,6 +15,10 @@ class Absence {
         ' -> ' +
         formatDate(endDate) +
         ' [$reason] [$additionalInfo]';
+  }
+
+  String getDateRange() {
+    return formatDate(startDate) + ' - ' + formatDate(endDate);
   }
 
   Map toMap() {

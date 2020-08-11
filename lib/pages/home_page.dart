@@ -18,6 +18,18 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   User user;
 
+  static Widget _mainFAB = FloatingActionButton(
+    onPressed: () {},
+    child: Text('MAIN'),
+  );
+
+  static Widget _absencesFAB = FloatingActionButton(
+    onPressed: () {},
+    child: Text('ABS'),
+  );
+
+  Widget _currentFAB = _mainFAB;
+
   String currentRoute = '/';
   String appBarRouteName = 'Strona główna';
 
@@ -41,6 +53,11 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             appBarRouteName = title;
             currentRoute = routeName;
+            routeName == '/'
+                ? _currentFAB = _mainFAB
+                : routeName == '/my_absences'
+                    ? _currentFAB = _absencesFAB
+                    : _currentFAB = _mainFAB;
           });
           Navigator.pop(context);
           _navigatorKey.currentState.pushReplacementNamed(routeName);
@@ -119,48 +136,54 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Material(
       elevation: 20.0,
-      child: Scaffold(
-          key: _scaffoldKey,
-          drawer: _buildDrawer(context),
-          appBar: AppBar(
-            title: Text(appBarRouteName),
-            leading: IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                _scaffoldKey.currentState.openDrawer();
-              },
-              splashRadius: 20,
+      child: WillPopScope(
+        onWillPop: () {
+          //TODO: HISTORIA KORZYSTANIA
+        },
+        child: Scaffold(
+            key: _scaffoldKey,
+            floatingActionButton: _currentFAB,
+            drawer: _buildDrawer(context),
+            appBar: AppBar(
+              title: Text(appBarRouteName),
+              leading: IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  _scaffoldKey.currentState.openDrawer();
+                },
+                splashRadius: 20,
+              ),
             ),
-          ),
-          body: Navigator(
-            initialRoute: '/',
-            key: _navigatorKey,
-            onGenerateRoute: (settings) {
-              switch (settings.name) {
-                case '/':
-                  return MaterialPageRoute(
-                    builder: (context) => Material(
-                      child: Center(
-                        child: Text('Strona główna, ogłoszenia?'),
+            body: Navigator(
+              initialRoute: '/',
+              key: _navigatorKey,
+              onGenerateRoute: (settings) {
+                switch (settings.name) {
+                  case '/':
+                    return MaterialPageRoute(
+                      builder: (context) => Material(
+                        child: Center(
+                          child: Text('Strona główna, ogłoszenia?'),
+                        ),
                       ),
-                    ),
-                  );
-                case '/my_absences':
-                  return MaterialPageRoute(
-                      builder: (context) => AbsencePage(
-                            repo: widget.repo,
-                          ));
-                default:
-                  return MaterialPageRoute(
-                    builder: (context) {
-                      return Center(
-                        child: Text('No such route ${settings.name}'),
-                      );
-                    },
-                  );
-              }
-            },
-          )),
+                    );
+                  case '/my_absences':
+                    return MaterialPageRoute(
+                        builder: (context) => AbsencePage(
+                              repo: widget.repo,
+                            ));
+                  default:
+                    return MaterialPageRoute(
+                      builder: (context) {
+                        return Center(
+                          child: Text('No such route ${settings.name}'),
+                        );
+                      },
+                    );
+                }
+              },
+            )),
+      ),
     );
   }
 

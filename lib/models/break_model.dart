@@ -1,5 +1,5 @@
-import 'package:ais_project/helpers/date_formatter.dart';
-import 'package:ais_project/helpers/time_formatter.dart';
+import 'package:ais_project/formatters/date_formatter.dart';
+import 'package:ais_project/formatters/time_formatter.dart';
 import 'package:flutter/material.dart';
 
 // Model zawierający dane o przerwie gotowe do wysłania do bazy

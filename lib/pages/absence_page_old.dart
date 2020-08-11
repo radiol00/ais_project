@@ -1,4 +1,4 @@
-import 'package:ais_project/helpers/date_formatter.dart';
+import 'package:ais_project/formatters/date_formatter.dart';
 import 'package:ais_project/models/absence_model.dart';
 import 'package:ais_project/styling/palette.dart';
 import 'package:ais_project/widgets/reason_dropdown.dart';
