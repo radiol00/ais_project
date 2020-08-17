@@ -5,6 +5,8 @@ import 'package:ais_project/styling/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:ais_project/models/user_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:ais_project/pages/add_absence_page.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({@required this.repo});
@@ -17,21 +19,37 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   User user;
-
-  static Widget _mainFAB = FloatingActionButton(
-    onPressed: () {},
-    child: Text('MAIN'),
-  );
-
-  static Widget _absencesFAB = FloatingActionButton(
-    onPressed: () {},
-    child: Text('ABS'),
-  );
-
-  Widget _currentFAB = _mainFAB;
-
   String currentRoute = '/';
   String appBarRouteName = 'Strona główna';
+
+  Widget _buildFAB(BuildContext context) {
+    if (currentRoute == '/my_absences')
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => AddAbsencePage(),
+          ));
+        },
+        child: Icon(Icons.add),
+      );
+
+    return SpeedDial(
+      overlayOpacity: 0,
+      marginRight: 14,
+      animatedIcon: AnimatedIcons.menu_close,
+      children: [
+        SpeedDialChild(
+          child: Icon(Icons.event_busy),
+          label: 'Zgłoś nieobecność',
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddAbsencePage(),
+            ));
+          },
+        ),
+      ],
+    );
+  }
 
   @override
   void initState() {
@@ -53,11 +71,6 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             appBarRouteName = title;
             currentRoute = routeName;
-            routeName == '/'
-                ? _currentFAB = _mainFAB
-                : routeName == '/my_absences'
-                    ? _currentFAB = _absencesFAB
-                    : _currentFAB = _mainFAB;
           });
           Navigator.pop(context);
           _navigatorKey.currentState.pushReplacementNamed(routeName);
@@ -142,7 +155,7 @@ class _HomePageState extends State<HomePage> {
         },
         child: Scaffold(
             key: _scaffoldKey,
-            floatingActionButton: _currentFAB,
+            floatingActionButton: _buildFAB(context),
             drawer: _buildDrawer(context),
             appBar: AppBar(
               title: Text(appBarRouteName),

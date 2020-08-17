@@ -23,33 +23,6 @@ class _AbsencePageState extends State<AbsencePage> {
   ];
 
   // Podaję context z Buildera w body Scaffoldu, żeby wyświetlić snackbar z funckji onPressed RaisedButtona
-  void submitAbsence(BuildContext context) {
-    //Error check
-    String errors = '';
-    if (reason == null) {
-      errors += '\n> Wybierz powód';
-    }
-    if (reason == 'Inne' && _additionalInfoController.text == "") {
-      errors += "\n> Powód 'Inne' wymaga podania dodatkowych informacji";
-    }
-    if (_startDate == null) {
-      errors += '\n> Podaj datę rozpoczęcia';
-    }
-    if (_endDate == null) {
-      errors += '\n> Podaj datę zakończenia';
-    }
-    // -----
-    if (errors == '') {
-      Navigator.of(context).pop(Absence(
-          startDate: _startDate,
-          endDate: _endDate,
-          additionalInfo: _additionalInfoController.text,
-          reason: reason));
-    } else {
-      errors = "Twój formularz zawiera błędy\n" + errors;
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text(errors)));
-    }
-  }
 
   Widget buildResponsiveDatePicker(BuildContext context) {
     double width = MediaQuery.of(context).size.width;

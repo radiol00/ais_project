@@ -22,9 +22,13 @@ class RootWidget extends StatelessWidget {
       // builder: DevicePreview.appBuilder,
       supportedLocales: [const Locale('pl')],
       theme: ThemeData(
+        primaryColor: Palette.appbar,
+        colorScheme: ColorScheme.light(
+            primary: Palette.appbar,
+            secondary: Palette.appbar,
+            onSecondary: Colors.white),
         accentColor: Palette.accentColor,
         scaffoldBackgroundColor: Palette.scaffoldBackground,
-        appBarTheme: AppBarTheme(color: Palette.appbar),
         canvasColor: Palette.scaffoldBackground,
         // platform: TargetPlatform.iOS,
       ),

@@ -23,11 +23,11 @@ class ReasonDropdown extends StatelessWidget {
             .toList(),
         onChanged: (value) {
           setDropdownValue(value);
-          if (value == 'Inne') {
-            Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text(
-                    "Po wybraniu opcji 'Inne' konieczne są dodatkowe informacje")));
-          }
+          // if (value == 'Inne') {
+          //   Scaffold.of(context).showSnackBar(SnackBar(
+          //       content: Text(
+          //           "Po wybraniu opcji 'Inne' konieczne są dodatkowe informacje")));
+          // }
         });
   }
 }
